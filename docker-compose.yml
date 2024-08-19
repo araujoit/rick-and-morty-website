@@ -1,0 +1,12 @@
+services:
+  website:
+    image: rick-and-morty-website:latest
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - 4201:80
+    networks:
+      - website
+
+networks:
+  website:
