@@ -1,4 +1,5 @@
 # RickAndMortyWebsite
+[![Docker Image CI](https://github.com/araujoit/rick-and-morty-website/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/araujoit/rick-and-morty-website/actions/workflows/docker-image.yml)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.1.
 
