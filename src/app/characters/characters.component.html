@@ -1,0 +1,151 @@
+<div class="container">
+
+    <mat-toolbar>
+        <button mat-flat-button (click)="prevPage()" [disabled]="disableFirstPage">
+            <mat-icon 
+                aria-hidden="false" 
+                matTooltip="Página anterior" 
+                aria-label="Página anterior" 
+                fontIcon="arrow_back">
+            </mat-icon>
+        </button>
+
+        <mat-form-field>
+            <mat-label>Página</mat-label>
+            <input matInput 
+                id="pagenumber" 
+                type="number"
+                min="1"
+                max="{{ totalPagesQuantity }}"
+                value="{{ currentPage }}" 
+                (change)="changePage($event)"
+                disabled="{{disablePageInput}}">
+            <mat-hint align="end">Total de {{totalPagesQuantity}} páginas</mat-hint>
+        </mat-form-field>
+
+        <button mat-flat-button (click)="nextPage()" [disabled]="disableNextPage">
+            <mat-icon 
+                aria-hidden="false" 
+                aria-label="Próxima página" 
+                matTooltip="Próxima página" 
+                fontIcon="arrow_forward">
+            </mat-icon>
+        </button>
+
+        <span class="spacer"></span>
+
+        <mat-form-field>
+            <mat-label>Pesquisar</mat-label>
+            <input matInput (keyup)="pesquisar($event)">
+        </mat-form-field>
+
+        <span class="spacer"></span>
+
+        <mat-form-field>
+            <mat-label>Colunas</mat-label>
+            <input matInput 
+                type="number"
+                min="1"
+                max="6"
+                value="{{ colunas }}" 
+                (change)="changeColumns($event)">
+        </mat-form-field>
+    </mat-toolbar>
+    
+    <section class="characters">
+        <mat-grid-list cols="{{colunas}}" rowHeight="{{tamanhoLinha}}" (window:resize)="onResize($event)">
+            <mat-grid-tile *ngFor="let character of characters">
+                <mat-card appearance="raised">
+                    <mat-card-header>
+                        <mat-card-title>
+                            {{ character.name }}
+                            <mat-icon matSuffix
+                                aria-hidden="false"
+                                matTooltip="Male or Female"
+                                aria-label="Male of Female">
+                                {{character.gender.toLowerCase() === "unknown" ? 'question_mark' : character.gender.toLowerCase()}}
+                            </mat-icon>
+
+                            <mat-icon matSuffix *ngIf="character.status !== 'Alive'">
+                                <svg
+                                    matTooltip="Morto"
+                                    aria-label="Morto"
+                                    fill="#ff0000" 
+                                    width="20px" 
+                                    height="20px" 
+                                    viewBox="0 0 64 64" 
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g data-name="Layer 26" id="Layer_26">
+                                    <path d="M32,3A29,29,0,1,0,61,32,29,29,0,0,0,32,3Zm0,56A27,27,0,1,1,59,32,27,27,0,0,1,32,59ZM48,34H16a1,1,0,0,0,0,2H32v5c0,4.41,3.14,8,7,8s7-3.59,7-8V36h2a1,1,0,0,0,0-2Zm-4,7c0,3.31-2.24,6-5,6s-5-2.69-5-6V36H44ZM36.29,26.29,40.59,22l-4.3-4.29a1,1,0,0,1,1.42-1.42L42,20.59l4.29-4.3a1,1,0,0,1,1.42,1.42L43.41,22l4.3,4.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0L42,23.41l-4.29,4.3a1,1,0,0,1-1.42,0A1,1,0,0,1,36.29,26.29Zm-20,0L20.59,22l-4.3-4.29a1,1,0,0,1,1.42-1.42L22,20.59l4.29-4.3a1,1,0,0,1,1.42,1.42L23.41,22l4.3,4.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0L22,23.41l-4.29,4.3a1,1,0,0,1-1.42,0A1,1,0,0,1,16.29,26.29Z"/>
+                                    </g>    
+                                </svg>
+                            </mat-icon>
+                
+                            <mat-icon matSuffix *ngIf="character.status === 'Alive'">
+                                <svg
+                                    matTooltip="Vivo"
+                                    aria-label="Vivo"
+                                    fill="#00bf00" 
+                                    width="20px" 
+                                    height="20px" 
+                                    viewBox="0 0 64 64" 
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g data-name="Layer 3" id="Layer_3">
+                                    <path d="M42,28a6,6,0,1,1,6-6A6,6,0,0,1,42,28Zm0-10a4,4,0,1,0,4,4A4,4,0,0,0,42,18ZM22,28a6,6,0,1,1,6-6A6,6,0,0,1,22,28Zm0-10a4,4,0,1,0,4,4A4,4,0,0,0,22,18ZM48.14,36.22l.53-.47a1,1,0,0,0-1.34-1.5l-.53.49C44.21,37.08,39.88,41,32,41s-12.21-3.92-14.8-6.26l-.53-.49a1,1,0,1,0-1.34,1.5l.53.47C18.66,38.75,23.35,43,32,43S45.34,38.75,48.14,36.22ZM32,61A29,29,0,1,1,61,32,29,29,0,0,1,32,61ZM32,5A27,27,0,1,0,59,32,27,27,0,0,0,32,5Z"/>
+                                    </g>    
+                                </svg>
+                            </mat-icon>
+                        </mat-card-title>
+                    </mat-card-header>
+
+                    <img mat-card-image src="{{ character.image}}" class="photo_character" />
+                    
+                    <mat-card-actions>
+                        <button mat-button (click)="openDetails(character)">
+                            <mat-icon 
+                                aria-hidden="false" 
+                                matTooltip="Detalhes" 
+                                aria-label="Detalhes" 
+                                fontIcon="menu">
+                            </mat-icon>
+                            Detalhes
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </section>
+
+    <mat-toolbar>
+        <button mat-flat-button (click)="prevPage()" [disabled]="disableFirstPage">
+            <mat-icon 
+                aria-hidden="false" 
+                matTooltip="Página anterior" 
+                aria-label="Página anterior" 
+                fontIcon="arrow_back">
+            </mat-icon>
+        </button>
+
+        <mat-form-field>
+            <mat-label>Página</mat-label>
+            <input matInput 
+                id="pagenumber" 
+                type="number"
+                min="1"
+                max="{{ totalPagesQuantity }}"
+                value="{{ currentPage }}" 
+                (change)="changePage($event)"
+                disabled="{{disablePageInput}}">
+            <mat-hint align="end">Total de {{totalPagesQuantity}} páginas</mat-hint>
+        </mat-form-field>
+
+        <button mat-flat-button (click)="nextPage()" [disabled]="disableNextPage">
+            <mat-icon 
+                aria-hidden="false" 
+                aria-label="Próxima página" 
+                matTooltip="Próxima página" 
+                fontIcon="arrow_forward">
+            </mat-icon>
+        </button>
+    </mat-toolbar>
+</div>

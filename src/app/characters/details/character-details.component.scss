@@ -1,0 +1,17 @@
+#character-details mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    /*width: 500px;*/
+}
+
+.photo {
+    width: fit-content;
+    margin: auto;
+    padding: 1rem;
+}
+
+@media screen and (max-width: 760px) {
+    .photo {
+        max-width: 10rem;
+    }
+}
